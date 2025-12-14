@@ -1,0 +1,176 @@
+<resources>
+    <!-- App Name -->
+    <string name="app_name">Idatgram</string>
+    
+    <!-- Authentication -->
+    <string name="login">Iniciar Sesión</string>
+    <string name="login_title">Iniciar Sesión</string>
+    <string name="login_email_label">Email</string>
+    <string name="login_email_placeholder">nombre@ejemplo.com</string>
+    <string name="login_password_label">Contraseña</string>
+    <string name="login_password_placeholder">Tu contraseña</string>
+    <string name="login_button">Iniciar Sesión</string>
+    <string name="login_forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="login_or">O</string>
+    <string name="login_register_button">Crear Cuenta Nueva</string>
+    <string name="login_footer">Aprende, crea y comparte con Idatgram</string>
+    <string name="register">Registrarse</string>
+    <string name="email">Correo Electrónico</string>
+    <string name="username">Nombre de Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="confirm_password">Confirmar Contraseña</string>
+    <string name="display_name">Nombre Completo</string>
+    <string name="forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="dont_have_account">¿No tienes una cuenta? Regístrate</string>
+    <string name="already_have_account">¿Ya tienes una cuenta? Inicia sesión</string>
+    <string name="logout">Cerrar Sesión</string>
+    
+    <!-- Navigation -->
+    <string name="home">Inicio</string>
+    <string name="nav_home">Inicio</string>
+    <string name="search">Buscar</string>
+    <string name="nav_search">Buscar</string>
+    <string name="add_post">Agregar</string>
+    <string name="nav_create">Crear</string>
+    <string name="activity">Actividad</string>
+    <string name="nav_reels">Reels</string>
+    <string name="profile">Perfil</string>
+    <string name="nav_profile">Perfil</string>
+    
+    <!-- Post Actions -->
+    <string name="like">Me gusta</string>
+    <string name="unlike">Quitar me gusta</string>
+    <string name="comment">Comentar</string>
+    <string name="share">Compartir</string>
+    <string name="save">Guardar</string>
+    <string name="unsave">Quitar de guardados</string>
+    <string name="edit">Editar</string>
+    <string name="delete">Eliminar</string>
+    
+    <!-- Profile -->
+    <string name="followers">seguidores</string>
+    <string name="followers_count">seguidores</string>
+    <string name="following">siguiendo</string>
+    <string name="following_count">siguiendo</string>
+    <string name="posts">publicaciones</string>
+    <string name="posts_count">publicaciones</string>
+    <string name="follow">Seguir</string>
+    <string name="unfollow">Dejar de seguir</string>
+    <string name="edit_profile">Editar perfil</string>
+    <string name="message">Mensaje</string>
+    <string name="verified_account">Cuenta verificada</string>
+    <string name="back_button">Atrás</string>
+    <string name="create_post">Crear publicación</string>
+    <string name="more_options">Más opciones</string>
+    <string name="posts_tab">Publicaciones</string>
+    <string name="tagged_tab">Etiquetado</string>
+    <string name="profile_picture">Foto de perfil de %1$s</string>
+    <string name="no_posts_own">Aún no tienes publicaciones</string>
+    <string name="no_posts_own_subtitle">Comparte tu primera foto o video</string>
+    <string name="no_posts_user">No hay publicaciones todavía</string>
+    <string name="no_posts_user_subtitle">Cuando %1$s comparta fotos y videos, aparecerán aquí</string>
+    <string name="no_tagged_posts">No hay fotos etiquetadas</string>
+    <string name="no_tagged_posts_subtitle">Cuando te etiqueten en fotos, aparecerán aquí</string>
+    
+    <!-- Home Screen -->
+    <string name="camera_button">Cámara</string>
+    <string name="direct_messages">Mensajes directos</string>
+    <string name="add_story">Agregar historia</string>
+    <string name="your_story">Tu historia</string>
+    <string name="user_story">Historia de %1$s</string>
+    <string name="empty_feed_title">¡Bienvenido a Idatgram!</string>
+    <string name="empty_feed_subtitle">Sigue a tus amigos para ver sus publicaciones aquí</string>
+    
+    <string name="bio">Biografía</string>
+    <string name="website">Sitio Web</string>
+    <string name="verified">Verificado</string>
+    
+    <!-- Comments -->
+    <string name="add_comment">Agregar un comentario...</string>
+    <string name="view_comments">Ver comentarios</string>
+    <string name="view_all_comments">Ver todos los comentarios</string>
+    <string name="reply">Responder</string>
+    <string name="send">Enviar</string>
+    
+    <!-- Stories -->
+    <string name="stories">Historias</string>
+    <string name="view_story">Ver historia</string>
+    
+    <!-- Search -->
+    <string name="search_users">Buscar usuarios</string>
+    <string name="search_posts">Buscar publicaciones</string>
+    <string name="recent_searches">Búsquedas recientes</string>
+    <string name="suggested_users">Usuarios sugeridos</string>
+    <string name="popular">Popular</string>
+    
+    <!-- Create Post -->
+    <string name="new_post">Nueva Publicación</string>
+    <string name="write_caption">Escribe un caption...</string>
+    <string name="add_location">Agregar ubicación</string>
+    <string name="tag_people">Etiquetar personas</string>
+    <string name="publish">Publicar</string>
+    <string name="cancel">Cancelar</string>
+    
+    <!-- Time -->
+    <string name="just_now">Ahora</string>
+    <string name="minutes_ago">%1$d min</string>
+    <string name="hours_ago">%1$d h</string>
+    <string name="days_ago">%1$d d</string>
+    <string name="weeks_ago">%1$d sem</string>
+    
+    <!-- Errors -->
+    <string name="error_generic">Ha ocurrido un error</string>
+    <string name="error_network">Error de conexión</string>
+    <string name="error_login">Email o contraseña incorrectos</string>
+    <string name="error_register">Error al registrar usuario</string>
+    <string name="error_email_required">El email es requerido</string>
+    <string name="error_username_required">El nombre de usuario es requerido</string>
+    <string name="error_password_required">La contraseña es requerida</string>
+    <string name="error_password_mismatch">Las contraseñas no coinciden</string>
+    <string name="error_username_taken">El nombre de usuario ya está en uso</string>
+    <string name="error_email_taken">El email ya está registrado</string>
+    <string name="error_invalid_email">Email inválido</string>
+    <string name="error_password_short">La contraseña debe tener al menos 6 caracteres</string>
+    
+    <!-- Dialogs -->
+    <string name="confirm">Confirmar</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="ok">OK</string>
+    <string name="loading">Cargando...</string>
+    
+    <!-- Menu -->
+    <string name="settings">Configuración</string>
+    <string name="help">Ayuda</string>
+    <string name="about">Acerca de</string>
+    <string name="privacy">Privacidad</string>
+    <string name="terms">Términos</string>
+    
+    <!-- Content Description (Accessibility) -->
+    <string name="cd_user_avatar">Avatar del usuario</string>
+    <string name="cd_post_image">Imagen de la publicación</string>
+    <string name="cd_story_image">Imagen de la historia</string>
+    <string name="cd_like_button">Botón de me gusta</string>
+    <string name="cd_comment_button">Botón de comentar</string>
+    <string name="cd_share_button">Botón de compartir</string>
+    <string name="cd_save_button">Botón de guardar</string>
+    <string name="cd_menu_button">Botón de menú</string>
+    <string name="cd_back_button">Botón de retroceder</string>
+    <string name="cd_close_button">Botón de cerrar</string>
+    
+    <!-- Plurals -->
+    <plurals name="likes_count">
+        <item quantity="one">%1$d Me gusta</item>
+        <item quantity="other">%1$d Me gusta</item>
+    </plurals>
+    
+    <plurals name="comments_count">
+        <item quantity="one">%1$d comentario</item>
+        <item quantity="other">%1$d comentarios</item>
+    </plurals>
+    
+    <plurals name="followers_count">
+        <item quantity="one">%1$d seguidor</item>
+        <item quantity="other">%1$d seguidores</item>
+    </plurals>
+</resources>

@@ -25,87 +25,67 @@ fun HomeScreen(
     onStoryClick: (String) -> Unit = {},
     onCameraClick: () -> Unit = {},
     onDirectMessagesClick: () -> Unit = {},
+    onCommentsClick: (String) -> Unit = {},
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    Column(
-        modifier = modifier.fillMaxSize()
-    ) {
-        // Barra Superior
-        TopAppBar(
-            title = {
-                Text(
-                    text = "Idatgram",
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        fontWeight = FontWeight.Bold
-                    ),
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = onCameraClick) {
-                    Icon(
-                        imageVector = Icons.Default.Camera,
-                        contentDescription = "Cámara",
-                        tint = MaterialTheme.colorScheme.onSurface
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        //Barra superior
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = "Idatgram",
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontWeight = FontWeight.Bold
+                        )
                     )
+                },
+                navigationIcon = {
+                    IconButton(onClick = onCameraClick) {
+                        Icon(Icons.Default.Camera, contentDescription = "Cámara")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onDirectMessagesClick) {
+                        Icon(Icons.Default.Send, contentDescription = "Mensajes directos")
+                    }
                 }
-            },
-            actions = {
-                IconButton(onClick = onDirectMessagesClick) {
-                    Icon(
-                        imageVector = Icons.Default.Send,
-                        contentDescription = "Mensajes directos",
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.surface
             )
-        )
-
-        // Contenido
+        }
+    ) { padding ->
+        //Contenido
         when {
             uiState.isLoading && uiState.posts.isEmpty() -> {
                 Box(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding),
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()
                 }
             }
-            
+
             uiState.posts.isEmpty() && !uiState.isLoading -> {
-                // Estado vacío
                 Box(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding),
                     contentAlignment = Alignment.Center
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(
                             imageVector = Icons.Default.PhotoCamera,
                             contentDescription = null,
-                            modifier = Modifier.size(64.dp),
-                            tint = MaterialTheme.colorScheme.primary
+                            modifier = Modifier.size(64.dp)
                         )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text(
-                            text = "¡Aún no hay publicaciones!",
-                            style = MaterialTheme.typography.headlineSmall,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "Sé el primero en compartir algo",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                        Spacer(Modifier.height(16.dp))
+                        Text("¡Aún no hay publicaciones!")
+                        Text("Sé el primero en compartir algo")
                     }
                 }
             }
@@ -113,7 +93,12 @@ fun HomeScreen(
             else -> {
                 // Lista de posts
                 LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentPadding = PaddingValues(
+                        top = padding.calculateTopPadding(),
+                        bottom = padding.calculateBottomPadding()
+                ),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     
@@ -154,7 +139,10 @@ fun HomeScreen(
                             onLikeClick = { 
                                 viewModel.toggleLike(postWithUser.post.id)
                             },
-                            onCommentClick = { /* TODO: Implementar comentarios */ },
+//                            onCommentClick = { /* TODO: Implementar comentarios */ },
+                            onCommentClick = {
+                                onCommentsClick(postWithUser.post.id)  // ✅ AQUÍ
+                            },
                             onShareClick = { /* TODO: Implementar compartir */ },
                             onSaveClick = {
                                 viewModel.toggleSave(postWithUser.post.id)

@@ -205,16 +205,16 @@ fun IdatgramScaffold(
 ) {
     Scaffold(
         modifier = modifier,
-        topBar = {
-            if (showTopBar) {
-                IdatgramTopAppBar(
-                    title = topBarTitle,
-                    navigationIcon = topBarNavigationIcon,
-                    onNavigationClick = onTopBarNavigationClick,
-                    actions = topBarActions
-                )
-            }
-        },
+//        topBar = {
+//            if (showTopBar) {
+//                IdatgramTopAppBar(
+//                    title = topBarTitle,
+//                    navigationIcon = topBarNavigationIcon,
+//                    onNavigationClick = onTopBarNavigationClick,
+//                    actions = topBarActions
+//                )
+//            }
+//        },
         bottomBar = {
             if (shouldShowBottomNavigation(currentRoute)) {
                 IdatgramBottomNavigation(navController = navController)

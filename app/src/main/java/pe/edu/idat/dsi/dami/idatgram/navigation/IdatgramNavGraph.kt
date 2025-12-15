@@ -19,6 +19,7 @@ import androidx.navigation.navArgument
 import pe.edu.idat.dsi.dami.idatgram.ui.screens.home.HomeScreen
 import pe.edu.idat.dsi.dami.idatgram.ui.screens.addpost.AddPostScreen
 import pe.edu.idat.dsi.dami.idatgram.ui.screens.auth.LoginScreen
+import pe.edu.idat.dsi.dami.idatgram.ui.screens.comments.CommentsScreen
 import pe.edu.idat.dsi.dami.idatgram.ui.viewmodel.LoginViewModel
 
 /**
@@ -98,6 +99,9 @@ fun IdatgramNavGraph(
                 },
                 onCameraClick = {
                     navController.navigate(IdatgramRoutes.ADD_POST)
+                },
+                onCommentsClick = { postId ->
+                    navController.navigate(IdatgramRoutes.comments(postId))
                 },
                 onDirectMessagesClick = {
                     // TODO: Implementar mensajes directos
@@ -188,10 +192,13 @@ fun IdatgramNavGraph(
         ) { backStackEntry ->
             val postId = backStackEntry.arguments?.getString(IdatgramArgs.POST_ID) ?: ""
             // TODO: Implementar CommentsScreen
-            PlaceholderScreen(
-                title = "Comentarios",
-                subtitle = "Post ID: $postId",
-                onNavigate = { navController.popBackStack() }
+//            PlaceholderScreen(
+//                title = "Comentarios",
+//                subtitle = "Post ID: $postId",
+//                onNavigate = { navController.popBackStack() }
+//            )
+            CommentsScreen(
+                onBack = { navController.popBackStack() }
             )
         }
         

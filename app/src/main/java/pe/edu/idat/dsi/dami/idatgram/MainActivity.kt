@@ -54,31 +54,32 @@ fun IdatgramApp() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     
-    // Determinar el título de la barra superior según la ruta actual
-    val topBarTitle = when (currentRoute) {
-        IdatgramRoutes.HOME -> "Idatgram"
-        IdatgramRoutes.SEARCH -> "Buscar"
-        IdatgramRoutes.ADD_POST -> "Nueva Publicación"
-        IdatgramRoutes.ACTIVITY -> "Actividad"
-        IdatgramRoutes.PROFILE -> "Perfil"
-        IdatgramRoutes.LOGIN -> "Iniciar Sesión"
-        IdatgramRoutes.REGISTER -> "Registrarse"
-        else -> "Idatgram"
-    }
-    
-    // Determinar si mostrar la barra superior
-    val showTopBar = when (currentRoute) {
-        IdatgramRoutes.LOGIN,
-        IdatgramRoutes.REGISTER -> false
-        else -> true
-    }
+//    // Determinar el título de la barra superior según la ruta actual
+//    val topBarTitle = when (currentRoute) {
+//        IdatgramRoutes.HOME -> "Idatgram"
+//        IdatgramRoutes.SEARCH -> "Buscar"
+//        IdatgramRoutes.ADD_POST -> "Nueva Publicación"
+//        IdatgramRoutes.ACTIVITY -> "Actividad"
+//        IdatgramRoutes.PROFILE -> "Perfil"
+//        IdatgramRoutes.LOGIN -> "Iniciar Sesión"
+//        IdatgramRoutes.REGISTER -> "Registrarse"
+//        IdatgramRoutes.COMMENTS -> "Comentarios"
+//        else -> "Idatgram"
+//    }
+//
+//    // Determinar si mostrar la barra superior
+//    val showTopBar = when (currentRoute) {
+//        IdatgramRoutes.LOGIN,
+//        IdatgramRoutes.REGISTER -> false
+//        else -> true
+//    }
     
     IdatgramScaffold(
         currentRoute = currentRoute,
         navController = navController,
         modifier = Modifier.fillMaxSize(),
-        topBarTitle = topBarTitle,
-        showTopBar = showTopBar
+//        topBarTitle = topBarTitle,
+//        showTopBar = showTopBar
     ) { paddingValues ->
         IdatgramNavGraph(
             navController = navController,

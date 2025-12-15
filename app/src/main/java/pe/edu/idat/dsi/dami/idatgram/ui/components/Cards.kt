@@ -186,7 +186,7 @@ private fun PostActions(
             )
             
             IdatgramIconButton(
-                icon = Icons.Default.Send,
+                icon = Icons.Default.ChatBubbleOutline,
                 onClick = onCommentClick,
                 contentDescription = "Comentar"
             )

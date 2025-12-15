@@ -49,10 +49,12 @@ Este proyecto está diseñado para enseñar los conceptos fundamentales de desar
 - [x] Arquitectura base con repositorios
 - [x] Pantallas de autenticación (Login/Registro)
 - [x] Integración con API REST
-- [x] Interacciones en publicaciones (likes, guardados, comentarios)
+- [x] Interacciones en publicaciones (likes, guardados)
+- [x] Feed principal con posts
+- [x] Barra de stories
 
 ### 🚧 En Desarrollo
-- [ ] Feed principal con posts y stories
+- [ ] Posts con comentarios
 - [ ] Pantalla de perfil de usuario
 - [ ] Sistema de comentarios
 - [ ] Búsqueda y exploración
@@ -81,11 +83,21 @@ app/
 │   │   │   ├── Post.kt
 │   │   │   ├── Comment.kt
 │   │   │   └── Story.kt
+│   │   └── remote/                    # APIS
+│   │   │   ├── dto/ 
+│   │   │   │   ├── UserRepository.kt
+│   │   │   │   └── PostRepository.kt
+│   │   │   └── IdatgramApiService.kt
 │   │   └── repository/                # Repositorios
+│   │       ├── CommentRepository.kt
+│   │       ├── LocalDatabaseRepository.kt
 │   │       ├── UserRepository.kt
 │   │       └── PostRepository.kt
+│   │   └── session/                  # Manejo de sesión
+│   │       └── SessionManager.kt
 │   ├── di/                           # Inyección de dependencias
-│   │   └── DatabaseModule.kt
+│   │   ├── DatabaseModule.kt
+│   │   └── NetworkModule.kt
 │   ├── navigation/                   # Navegación
 │   │   ├── IdatgramRoutes.kt
 │   │   ├── IdatgramNavGraph.kt
@@ -95,11 +107,28 @@ app/
 │   │   │   ├── Buttons.kt
 │   │   │   ├── TextFields.kt
 │   │   │   └── Cards.kt
-│   │   ├── screens/                  # Pantallas (próximamente)
-│   │   └── theme/                    # Tema personalizado
-│   │       ├── Color.kt
-│   │       ├── Theme.kt
-│   │       └── Type.kt
+│   │   ├── screens/                  # Pantallas
+│   │   │   ├── addpost/
+│   │   │   │   └── AddPostScreen.kt
+│   │   │   ├── auth/
+│   │   │   │   ├── LoginScreen.kt
+│   │   │   │   └── RegisterScreen.kt
+│   │   │   ├── comment/
+│   │   │   │   └── CommentScreen.kt
+│   │   │   ├── home/
+│   │   │   │   └── HomeScreen.kt
+│   │   │   └── profile/
+│   │   │       └── ProfileScreen.kt
+│   │   ├── theme/                    # Tema personalizado
+│   │   │   ├── Color.kt
+│   │   │   ├── Theme.kt
+│   │   │   └── Type.kt
+│   │   └── viewmodel/                # ViewModels
+│   │       ├── AddPostViewModel.kt
+│   │       ├── CommentsViewModel.kt
+│   │       ├── HomeViewModel.kt
+│   │       ├── LoginViewModel.kt
+│   │       └── SessionViewModel.kt
 │   ├── IdatgramApplication.kt        # Application principal
 │   └── MainActivity.kt               # Activity principal
 ├── src/main/res/

@@ -32,10 +32,18 @@ interface UserDao {
     
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUsers(users: List<User>)
-    
+
+    // Inserta sin reemplazar (si existe en local, no hace nada)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertUsersIgnore(users: List<User>): List<Long>
+
     @Update
     suspend fun updateUser(user: User)
-    
+
+    //Update en batch
+    @Update
+    suspend fun updateUsers(users: List<User>)
+
     @Delete
     suspend fun deleteUser(user: User)
     

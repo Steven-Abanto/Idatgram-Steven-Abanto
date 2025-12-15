@@ -30,9 +30,17 @@ interface PostDao {
     
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPosts(posts: List<Post>)
+
+    // Inserta sin reemplazar (si existe en local, no hace nada)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertPostsIgnore(posts: List<Post>): List<Long>
     
     @Update
     suspend fun updatePost(post: Post)
+
+    // Update en batch
+    @Update
+    suspend fun updatePosts(posts: List<Post>)
     
     @Delete
     suspend fun deletePost(post: Post)

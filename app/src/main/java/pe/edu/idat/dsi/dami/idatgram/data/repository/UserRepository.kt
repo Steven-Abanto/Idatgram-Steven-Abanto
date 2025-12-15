@@ -60,6 +60,21 @@ class UserRepository @Inject constructor(
     fun getAllUsers(): Flow<List<User>> {
         return userDao.getAllUsers()
     }
+
+    suspend fun insertRemoteUsersSafe(users: List<User>) {
+        val results = userDao.insertUsersIgnore(users)
+
+        val toUpdate = mutableListOf<User>()
+        for (i in results.indices) {
+            if (results[i] == -1L) {
+                toUpdate.add(users[i])
+            }
+        }
+
+        if (toUpdate.isNotEmpty()) {
+            userDao.updateUsers(toUpdate)
+        }
+    }
     
     suspend fun createUser(user: User): Result<User> {
         return try {

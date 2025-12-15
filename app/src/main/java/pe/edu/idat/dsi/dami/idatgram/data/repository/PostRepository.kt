@@ -135,15 +135,33 @@ class PostRepository @Inject constructor(
 //Trae los posts de manera remota y los guarda en la base de datos local
     suspend fun refreshFeed(): Result<List<PostWithUser>> {
         return try {
-            // 1) Bajar del API
+            // Recupera desde el API
             val remoteUsers = apiService.getUsers()
             val remotePosts = apiService.getPosts()
 
-            // 2) Guardar en Room (necesitas upsertUsers / upsertPosts en tus DAOs)
-            userRepository.insertRemoteUsers(remoteUsers.map { it.toEntity() })
-            postDao.insertPosts(remotePosts.map { it.toEntity() })
+            // Guarda en local si no existe, si existe, se ignora
+            val userEntities = remoteUsers.map { it.toEntity() }
+            userRepository.insertRemoteUsersSafe(userEntities)
 
-            // 3) Devolver feed desde Room (como ya lo tenías)
+            val postEntities = remotePosts.map { it.toEntity() }
+            val insertResults = postDao.insertPostsIgnore(postEntities)
+
+            val toUpdate = mutableListOf<Post>()
+            for (i in insertResults.indices) {
+                if (insertResults[i] == -1L) {
+                    toUpdate.add(postEntities[i])
+                }
+            }
+
+            if (toUpdate.isNotEmpty()) {
+                postDao.updatePosts(toUpdate)
+            }
+
+            postEntities.forEach { post ->
+                postDao.updatePostCounts(post.id)
+            }
+
+            // Carga el feed desde local
             val posts = getFeedPosts(limit = 50, offset = 0)
             Result.success(posts)
         } catch (e: Exception) {
@@ -152,31 +170,30 @@ class PostRepository @Inject constructor(
     }
     
     // Likes
-    
+
     suspend fun toggleLike(postId: String): Result<Boolean> {
         return try {
             val currentUserId = userRepository.getCurrentUserId()
                 ?: return Result.failure(Exception("Usuario no autenticado"))
-            
+
             val isLiked = postDao.isPostLiked(postId, currentUserId)
-            
             if (isLiked) {
                 postDao.unlikePost(postId, currentUserId)
-                postDao.updatePostCounts(postId)
-                Result.success(false)
             } else {
-                val postLike = PostLike(
-                    postId = postId,
-                    userId = currentUserId
+                postDao.likePost(
+                    PostLike(
+                        postId = postId,
+                        userId = currentUserId
+                    )
                 )
-                postDao.likePost(postLike)
-                postDao.updatePostCounts(postId)
-                Result.success(true)
             }
+            postDao.updatePostCounts(postId)
+            Result.success(!isLiked)
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
+
     
     suspend fun isPostLiked(postId: String): Boolean {
         val currentUserId = userRepository.getCurrentUserId() ?: return false
@@ -197,20 +214,21 @@ class PostRepository @Inject constructor(
         return try {
             val currentUserId = userRepository.getCurrentUserId()
                 ?: return Result.failure(Exception("Usuario no autenticado"))
-            
+
             val isSaved = postDao.isPostSaved(postId, currentUserId)
-            
+
             if (isSaved) {
                 postDao.unsavePost(postId, currentUserId)
-                Result.success(false)
             } else {
-                val savedPost = SavedPost(
-                    postId = postId,
-                    userId = currentUserId
+                postDao.savePost(
+                    SavedPost(
+                        postId = postId,
+                        userId = currentUserId
+                    )
                 )
-                postDao.savePost(savedPost)
-                Result.success(true)
             }
+
+            Result.success(!isSaved)
         } catch (e: Exception) {
             Result.failure(e)
         }

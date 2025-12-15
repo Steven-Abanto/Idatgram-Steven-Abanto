@@ -49,6 +49,7 @@ Este proyecto está diseñado para enseñar los conceptos fundamentales de desar
 - [x] Arquitectura base con repositorios
 - [x] Pantallas de autenticación (Login/Registro)
 - [x] Integración con API REST
+- [x] Interacciones en publicaciones (likes, guardados, comentarios)
 
 ### 🚧 En Desarrollo
 - [ ] Feed principal con posts y stories

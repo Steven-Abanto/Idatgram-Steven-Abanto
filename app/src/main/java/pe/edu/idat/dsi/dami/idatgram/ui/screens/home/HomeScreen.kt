@@ -156,7 +156,9 @@ fun HomeScreen(
                             },
                             onCommentClick = { /* TODO: Implementar comentarios */ },
                             onShareClick = { /* TODO: Implementar compartir */ },
-                            onSaveClick = { /* TODO: Implementar guardar */ },
+                            onSaveClick = {
+                                viewModel.toggleSave(postWithUser.post.id)
+                            },
                             onUserClick = { onUserProfileClick(postWithUser.user.id) }
                         )
                     }

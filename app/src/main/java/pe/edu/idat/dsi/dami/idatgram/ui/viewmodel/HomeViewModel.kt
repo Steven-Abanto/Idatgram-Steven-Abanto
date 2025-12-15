@@ -148,6 +148,26 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun toggleSave(postId: String) {
+        viewModelScope.launch {
+            try {
+                val result = postRepository.toggleSavePost(postId)
+                if (result.isFailure) {
+                    _uiState.value = _uiState.value.copy(
+                        errorMessage = "Error al guardar: ${result.exceptionOrNull()?.message}"
+                    )
+                } else {
+                    loadPosts()
+                }
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    errorMessage = "Error al guardar: ${e.message}"
+                )
+            }
+        }
+    }
+
+
     fun clearError() {
         _uiState.value = _uiState.value.copy(errorMessage = null)
     }

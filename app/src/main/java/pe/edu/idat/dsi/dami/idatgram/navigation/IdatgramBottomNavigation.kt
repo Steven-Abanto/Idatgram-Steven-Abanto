@@ -142,7 +142,8 @@ fun shouldShowBottomNavigation(currentRoute: String?): Boolean {
         IdatgramRoutes.SEARCH,
         IdatgramRoutes.ADD_POST,
         IdatgramRoutes.ACTIVITY,
-        IdatgramRoutes.PROFILE -> true
+        IdatgramRoutes.PROFILE,
+        IdatgramRoutes.USER_PROFILE -> true
         else -> false
     }
 }

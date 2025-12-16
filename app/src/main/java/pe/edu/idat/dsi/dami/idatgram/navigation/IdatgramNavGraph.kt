@@ -20,7 +20,10 @@ import pe.edu.idat.dsi.dami.idatgram.ui.screens.home.HomeScreen
 import pe.edu.idat.dsi.dami.idatgram.ui.screens.addpost.AddPostScreen
 import pe.edu.idat.dsi.dami.idatgram.ui.screens.auth.LoginScreen
 import pe.edu.idat.dsi.dami.idatgram.ui.screens.comments.CommentsScreen
+import pe.edu.idat.dsi.dami.idatgram.ui.screens.profile.ProfileScreen
 import pe.edu.idat.dsi.dami.idatgram.ui.viewmodel.LoginViewModel
+import pe.edu.idat.dsi.dami.idatgram.ui.viewmodel.ProfileViewModel
+import pe.edu.idat.dsi.dami.idatgram.ui.viewmodel.SessionViewModel
 
 /**
  * Navigation Graph principal de Idatgram
@@ -92,10 +95,12 @@ fun IdatgramNavGraph(
         composable(route = IdatgramRoutes.HOME) {
             HomeScreen(
                 onUserProfileClick = { userId ->
-                    navController.navigate("${IdatgramRoutes.USER_PROFILE}/$userId")
+//                    navController.navigate("${IdatgramRoutes.USER_PROFILE}/$userId")
+                    navController.navigate(IdatgramRoutes.userProfile(userId))
                 },
                 onStoryClick = { userId ->
-                    navController.navigate("${IdatgramRoutes.STORY_VIEWER}/$userId")
+//                    navController.navigate("${IdatgramRoutes.STORY_VIEWER}/$userId")
+                    navController.navigate(IdatgramRoutes.storyViewer(userId))
                 },
                 onCameraClick = {
                     navController.navigate(IdatgramRoutes.ADD_POST)
@@ -137,12 +142,52 @@ fun IdatgramNavGraph(
                 subtitle = "Notificaciones e interacciones"
             )
         }
-        
+
         composable(route = IdatgramRoutes.PROFILE) {
             // TODO: Implementar ProfileScreen
-            PlaceholderScreen(
-                title = "Mi Perfil",
-                subtitle = "Información personal y publicaciones"
+//            PlaceholderScreen(
+//                title = "Mi Perfil",
+//                subtitle = "Información personal y publicaciones"
+//            )
+
+            val sessionVm: SessionViewModel = hiltViewModel()
+            val myId by sessionVm.currentUserId.collectAsState()
+            val loaded by sessionVm.sessionLoaded.collectAsState()
+
+            if (!loaded) {
+                PlaceholderScreen(title = "Cargando sesión...", subtitle = null)
+                return@composable
+            }
+
+            // Si no hay sesión, manda a login
+            if (myId.isNullOrBlank()) {
+                LaunchedEffect(Unit) {
+                    navController.navigate(IdatgramRoutes.LOGIN) {
+                        popUpTo(navController.graph.startDestinationId) { inclusive = false }
+                        launchSingleTop = true
+                    }
+                }
+                return@composable
+            }
+
+            val profileVm: ProfileViewModel = hiltViewModel()
+            val state by profileVm.uiState.collectAsState()
+
+            LaunchedEffect(myId) { profileVm.load(myId!!) }
+
+            val user = state.user ?: run {
+                PlaceholderScreen(title = "Cargando perfil...", subtitle = null)
+                return@composable
+            }
+
+            ProfileScreen(
+                user = user,
+                userPosts = state.userPosts,
+                isOwnProfile = true,
+                isFollowing = false,
+                onEditProfileClick = { navController.navigate(IdatgramRoutes.EDIT_PROFILE) },
+                onPostClick = { postId -> navController.navigate(IdatgramRoutes.postDetail(postId)) },
+                onOptionsClick = { navController.navigate(IdatgramRoutes.SETTINGS) }
             )
         }
         
@@ -151,17 +196,38 @@ fun IdatgramNavGraph(
         composable(
             route = IdatgramRoutes.USER_PROFILE,
             arguments = listOf(
-                navArgument(IdatgramArgs.USER_ID) { 
-                    type = NavType.StringType 
+                navArgument(IdatgramArgs.USER_ID) {
+                    type = NavType.StringType
                 }
             )
         ) { backStackEntry ->
-            val userId = backStackEntry.arguments?.getString(IdatgramArgs.USER_ID) ?: ""
+            val userId = backStackEntry.arguments?.getString(IdatgramArgs.USER_ID) ?: return@composable
             // TODO: Implementar UserProfileScreen
-            PlaceholderScreen(
-                title = "Perfil de Usuario",
-                subtitle = "ID: $userId",
-                onNavigate = { navController.popBackStack() }
+//            PlaceholderScreen(
+//                title = "Perfil de Usuario",
+//                subtitle = "ID: $userId",
+//                onNavigate = { navController.popBackStack() }
+//            )
+
+            val profileVm: ProfileViewModel = hiltViewModel()
+            val state by profileVm.uiState.collectAsState()
+
+            LaunchedEffect(userId) { profileVm.load(userId) }
+
+            val user = state.user ?: run {
+                PlaceholderScreen(title = "Cargando perfil...", subtitle = null)
+                return@composable
+            }
+
+            ProfileScreen(
+                user = user,
+                userPosts = state.userPosts,
+                isOwnProfile = state.isOwnProfile,
+                isFollowing = state.isFollowing,
+                onFollowClick = { profileVm.onFollowClick(userId) },
+                onPostClick = { postId -> navController.navigate(IdatgramRoutes.postDetail(postId)) },
+                onBackClick = { navController.popBackStack() },
+                onOptionsClick = { navController.navigate(IdatgramRoutes.SETTINGS) }
             )
         }
         

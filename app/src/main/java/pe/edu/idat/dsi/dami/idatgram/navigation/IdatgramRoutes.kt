@@ -2,23 +2,23 @@ package pe.edu.idat.dsi.dami.idatgram.navigation
 
 /**
  * Definición de rutas de navegación para la aplicación Idatgram
- * 
+ *
  * Incluye rutas para autenticación, pantallas principales y navegación detallada
  * con parámetros para IDs de usuarios, posts, etc.
  */
 object IdatgramRoutes {
-    
+
     // === Autenticación ===
     const val LOGIN = "login"
     const val REGISTER = "register"
-    
+
     // === Navegación Principal ===
     const val HOME = "home"
     const val SEARCH = "search"
     const val ADD_POST = "add_post"
     const val ACTIVITY = "activity"
     const val PROFILE = "profile"
-    
+
     // === Pantallas de Detalle ===
     const val USER_PROFILE = "user_profile/{userId}"
     const val POST_DETAIL = "post_detail/{postId}"
@@ -28,7 +28,7 @@ object IdatgramRoutes {
     const val FOLLOWING = "following/{userId}"
     const val EDIT_PROFILE = "edit_profile"
     const val SETTINGS = "settings"
-    
+
     // === Navegación con Argumentos ===
     fun userProfile(userId: String) = "user_profile/$userId"
     fun postDetail(postId: String) = "post_detail/$postId"
@@ -82,12 +82,12 @@ enum class BottomNavTab(
     LOGIN(
         route = IdatgramRoutes.LOGIN,
         titleResId = android.R.string.untitled, // Reemplazar con R.string.login
-        iconResId = null // Usar Icons.Default.FavoriteBorder
+        iconResId = null
     ),
     REGISTER(
         route = IdatgramRoutes.REGISTER,
         titleResId = android.R.string.untitled, // Reemplazar con R.string.register
-        iconResId = null // Usar Icons.Default.Person
+        iconResId = null
     )
 }
 

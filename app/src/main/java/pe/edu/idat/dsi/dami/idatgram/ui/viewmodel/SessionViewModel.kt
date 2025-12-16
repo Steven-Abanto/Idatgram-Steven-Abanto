@@ -3,6 +3,7 @@ package pe.edu.idat.dsi.dami.idatgram.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -16,6 +17,13 @@ class SessionViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
 
+    val currentUserId: StateFlow<String?> =
+        userRepository.currentUserIdFlow
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
+
+    private val _sessionLoaded = MutableStateFlow(false)
+    val sessionLoaded: StateFlow<Boolean> = _sessionLoaded
+
     // true si hay userId guardado en DataStore
     val isLoggedIn: StateFlow<Boolean> =
         userRepository.currentUserIdFlow
@@ -26,6 +34,7 @@ class SessionViewModel @Inject constructor(
         // Cargamos sesión en memoria para que los repos que usan currentUserId no fallen
         viewModelScope.launch {
             userRepository.loadSession()
+            _sessionLoaded.value = true
         }
     }
 }

@@ -71,16 +71,9 @@ fun ProfileScreen(
             },
             navigationIcon = {
                 if (!isOwnProfile) {
-                    @androidx.compose.runtime.Composable {
-                        IconButton(onClick = onBackClick) {
-                            Icon(
-                                imageVector = Icons.Default.ArrowBack,
-                                contentDescription = stringResource(R.string.back_button)
-                            )
-                        }
+                    IconButton(onClick = onBackClick) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.back_button))
                     }
-                } else {
-                    null
                 }
             },
             actions = {

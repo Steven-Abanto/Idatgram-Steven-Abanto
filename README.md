@@ -52,11 +52,10 @@ Este proyecto está diseñado para enseñar los conceptos fundamentales de desar
 - [x] Interacciones en publicaciones (likes, guardados)
 - [x] Feed principal con posts
 - [x] Barra de stories
+- [x] Posts con comentarios
+- [x] Pantalla de perfil de usuarios
 
 ### 🚧 En Desarrollo
-- [ ] Posts con comentarios
-- [ ] Pantalla de perfil de usuario
-- [ ] Sistema de comentarios
 - [ ] Búsqueda y exploración
 
 ### 🔮 Futuras Implementaciones
@@ -84,9 +83,10 @@ app/
 │   │   │   ├── Comment.kt
 │   │   │   └── Story.kt
 │   │   └── remote/                    # APIS
-│   │   │   ├── dto/ 
-│   │   │   │   ├── UserRepository.kt
-│   │   │   │   └── PostRepository.kt
+│   │   │   ├── dto/
+│   │   │   │   ├── CommentDto.kt 
+│   │   │   │   ├── UserDto.kt
+│   │   │   │   └── PostDto.kt
 │   │   │   └── IdatgramApiService.kt
 │   │   └── repository/                # Repositorios
 │   │       ├── CommentRepository.kt

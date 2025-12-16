@@ -2,6 +2,7 @@ package pe.edu.idat.dsi.dami.idatgram.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 import pe.edu.idat.dsi.dami.idatgram.data.entity.User
+import pe.edu.idat.dsi.dami.idatgram.data.entity.UserFollow
 
 /**
  * DTO que viene del API.
@@ -36,3 +37,15 @@ fun UserDto.toEntity(): User {
         isPrivate = isPrivate ?: false
     )
 }
+
+data class UserFollowDto(
+    @SerializedName("followerId") val followerId: String,
+    @SerializedName("followingId") val followingId: String,
+    @SerializedName("createdAt") val createdAt: Long? = null
+)
+
+fun UserFollowDto.toEntity() = UserFollow(
+    followerId = followerId,
+    followingId = followingId,
+    createdAt = createdAt ?: System.currentTimeMillis()
+)

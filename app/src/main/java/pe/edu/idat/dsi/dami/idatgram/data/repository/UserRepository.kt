@@ -75,7 +75,12 @@ class UserRepository @Inject constructor(
             userDao.updateUsers(toUpdate)
         }
     }
-    
+
+    suspend fun insertRemoteFollowsSafe(follows: List<UserFollow>) {
+        userDao.followUsersIgnore(follows)
+    }
+
+
     suspend fun createUser(user: User): Result<User> {
         return try {
             // Validaciones

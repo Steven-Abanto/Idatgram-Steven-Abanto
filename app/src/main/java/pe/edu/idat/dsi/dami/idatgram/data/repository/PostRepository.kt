@@ -2,6 +2,7 @@ package pe.edu.idat.dsi.dami.idatgram.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import pe.edu.idat.dsi.dami.idatgram.data.dao.CommentDao
 import pe.edu.idat.dsi.dami.idatgram.data.dao.PostDao
 import pe.edu.idat.dsi.dami.idatgram.data.entity.Post
 import pe.edu.idat.dsi.dami.idatgram.data.entity.PostLike
@@ -18,6 +19,7 @@ import javax.inject.Singleton
 @Singleton
 class PostRepository @Inject constructor(
     private val postDao: PostDao,
+    private val commentDao: CommentDao,
     private val userRepository: UserRepository,
     private val apiService: IdatgramApiService
 ) {
@@ -135,14 +137,22 @@ class PostRepository @Inject constructor(
 //Trae los posts de manera remota y los guarda en la base de datos local
     suspend fun refreshFeed(): Result<List<PostWithUser>> {
         return try {
+            // Valida usuario actual
+            val currentUserId = userRepository.getCurrentUserId()
+                ?: return Result.failure(Exception("Usuario no autenticado"))
+
             // Recupera desde el API
             val remoteUsers = apiService.getUsers()
+            val remoteFollows = apiService.getFollows()
             val remotePosts = apiService.getPosts()
+            val remoteComments = apiService.getComments()
 
-            // Guarda en local si no existe, si existe, se ignora
+            // Usuarios y relaciones
             val userEntities = remoteUsers.map { it.toEntity() }
             userRepository.insertRemoteUsersSafe(userEntities)
+            userRepository.insertRemoteFollowsSafe(remoteFollows.map { it.toEntity() })
 
+            // Posts
             val postEntities = remotePosts.map { it.toEntity() }
             val insertResults = postDao.insertPostsIgnore(postEntities)
 
@@ -157,8 +167,25 @@ class PostRepository @Inject constructor(
                 postDao.updatePosts(toUpdate)
             }
 
+            // Comentarios
+            val commentEntities = remoteComments.map { it.toEntity() }
+            val commentResults = commentDao.insertCommentsIgnore(commentEntities)
+
+            val commentsToUpdate = commentResults.indices
+                .filter { commentResults[it] == -1L }
+                .map { commentEntities[it] }
+
+            if (commentsToUpdate.isNotEmpty()) {
+                commentDao.updateComments(commentsToUpdate)
+            }
+
+            // Calcula contadores
             postEntities.forEach { post ->
                 postDao.updatePostCounts(post.id)
+            }
+
+            commentEntities.forEach { comment ->
+                commentDao.updateCommentCounts(comment.id)
             }
 
             // Carga el feed desde local

@@ -29,7 +29,13 @@ interface CommentDao {
     
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertComments(comments: List<Comment>)
-    
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertCommentsIgnore(comments: List<Comment>): List<Long>
+
+    @Update
+    suspend fun updateComments(comments: List<Comment>)
+
     @Update
     suspend fun updateComment(comment: Comment)
     

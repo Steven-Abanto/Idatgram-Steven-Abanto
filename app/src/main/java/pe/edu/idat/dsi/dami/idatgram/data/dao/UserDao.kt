@@ -71,6 +71,9 @@ interface UserDao {
     
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun followUser(userFollow: UserFollow)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun followUsersIgnore(follows: List<UserFollow>): List<Long>
     
     @Query("DELETE FROM user_follows WHERE followerId = :followerId AND followingId = :followingId")
     suspend fun unfollowUser(followerId: String, followingId: String)

@@ -21,6 +21,7 @@ import pe.edu.idat.dsi.dami.idatgram.ui.screens.addpost.AddPostScreen
 import pe.edu.idat.dsi.dami.idatgram.ui.screens.auth.LoginScreen
 import pe.edu.idat.dsi.dami.idatgram.ui.screens.comments.CommentsScreen
 import pe.edu.idat.dsi.dami.idatgram.ui.screens.profile.ProfileScreen
+import pe.edu.idat.dsi.dami.idatgram.ui.screens.search.SearchScreen
 import pe.edu.idat.dsi.dami.idatgram.ui.viewmodel.LoginViewModel
 import pe.edu.idat.dsi.dami.idatgram.ui.viewmodel.ProfileViewModel
 import pe.edu.idat.dsi.dami.idatgram.ui.viewmodel.SessionViewModel
@@ -116,9 +117,18 @@ fun IdatgramNavGraph(
         
         composable(route = IdatgramRoutes.SEARCH) {
             // TODO: Implementar SearchScreen
-            PlaceholderScreen(
-                title = "Buscar",
-                subtitle = "Explorar usuarios y contenido"
+//            PlaceholderScreen(
+//                title = "Buscar",
+//                subtitle = "Explorar usuarios y contenido"
+//            )
+
+            SearchScreen(
+                onUserClick = { userId ->
+                    navController.navigate(IdatgramRoutes.userProfile(userId))
+                },
+                onPostClick = { postId ->
+                    navController.navigate(IdatgramRoutes.postDetail(postId))
+                }
             )
         }
         
@@ -187,7 +197,8 @@ fun IdatgramNavGraph(
                 isFollowing = false,
                 onEditProfileClick = { navController.navigate(IdatgramRoutes.EDIT_PROFILE) },
                 onPostClick = { postId -> navController.navigate(IdatgramRoutes.postDetail(postId)) },
-                onOptionsClick = { navController.navigate(IdatgramRoutes.SETTINGS) }
+                onOptionsClick = { navController.navigate(IdatgramRoutes.SETTINGS) },
+                onAddPostClick = { navController.navigate(IdatgramRoutes.ADD_POST) }
             )
         }
         

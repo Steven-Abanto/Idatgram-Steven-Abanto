@@ -54,13 +54,13 @@ Este proyecto está diseñado para enseñar los conceptos fundamentales de desar
 - [x] Barra de stories
 - [x] Posts con comentarios
 - [x] Pantalla de perfil de usuarios
+- [x] Búsqueda y exploración
 
 ### 🚧 En Desarrollo
-- [ ] Búsqueda y exploración
+- [ ] Stories con temporizador
 
 ### 🔮 Futuras Implementaciones
 - [ ] Notificaciones push
-- [ ] Stories con temporizador
 - [ ] Chat directo
 - [ ] Filtros de cámara
 
@@ -128,6 +128,7 @@ app/
 │   │       ├── CommentsViewModel.kt
 │   │       ├── HomeViewModel.kt
 │   │       ├── LoginViewModel.kt
+│   │       ├── ProfileViewModel.kt
 │   │       └── SessionViewModel.kt
 │   ├── IdatgramApplication.kt        # Application principal
 │   └── MainActivity.kt               # Activity principal

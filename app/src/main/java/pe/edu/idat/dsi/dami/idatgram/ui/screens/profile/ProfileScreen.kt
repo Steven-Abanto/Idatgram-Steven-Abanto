@@ -53,6 +53,7 @@ fun ProfileScreen(
     onPostClick: (String) -> Unit = {},
     onBackClick: () -> Unit = {},
     onOptionsClick: () -> Unit = {},
+    onAddPostClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -78,7 +79,8 @@ fun ProfileScreen(
             },
             actions = {
                 if (isOwnProfile) {
-                    IconButton(onClick = { /* TODO: Crear post */ }) {
+//                    IconButton(onClick = { /* TODO: Crear post */ }) {
+                    IconButton(onClick = onAddPostClick) {
                         Icon(
                             imageVector = Icons.Default.Add,
                             contentDescription = stringResource(R.string.create_post)

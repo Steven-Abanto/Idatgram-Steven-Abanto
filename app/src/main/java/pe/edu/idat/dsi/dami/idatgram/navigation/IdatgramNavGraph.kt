@@ -22,6 +22,7 @@ import pe.edu.idat.dsi.dami.idatgram.ui.screens.auth.LoginScreen
 import pe.edu.idat.dsi.dami.idatgram.ui.screens.comments.CommentsScreen
 import pe.edu.idat.dsi.dami.idatgram.ui.screens.profile.ProfileScreen
 import pe.edu.idat.dsi.dami.idatgram.ui.screens.search.SearchScreen
+import pe.edu.idat.dsi.dami.idatgram.ui.screens.story.StoryViewerScreen
 import pe.edu.idat.dsi.dami.idatgram.ui.viewmodel.LoginViewModel
 import pe.edu.idat.dsi.dami.idatgram.ui.viewmodel.ProfileViewModel
 import pe.edu.idat.dsi.dami.idatgram.ui.viewmodel.SessionViewModel
@@ -289,10 +290,15 @@ fun IdatgramNavGraph(
         ) { backStackEntry ->
             val userId = backStackEntry.arguments?.getString(IdatgramArgs.USER_ID) ?: ""
             // TODO: Implementar StoryViewerScreen
-            PlaceholderScreen(
-                title = "Historia",
-                subtitle = "Usuario: $userId",
-                onNavigate = { navController.popBackStack() }
+//            PlaceholderScreen(
+//                title = "Historia",
+//                subtitle = "Usuario: $userId",
+//                onNavigate = { navController.popBackStack() }
+//            )
+
+             StoryViewerScreen(
+                userId = userId,
+                onClose = { navController.popBackStack() }
             )
         }
         

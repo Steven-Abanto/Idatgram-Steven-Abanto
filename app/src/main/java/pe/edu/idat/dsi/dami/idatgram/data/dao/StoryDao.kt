@@ -30,9 +30,15 @@ interface StoryDao {
     
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertStories(stories: List<Story>)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertStoriesIgnore(stories: List<Story>): List<Long>
     
     @Update
     suspend fun updateStory(story: Story)
+
+    @Update
+    suspend fun updateStories(stories: List<Story>)
     
     @Delete
     suspend fun deleteStory(story: Story)

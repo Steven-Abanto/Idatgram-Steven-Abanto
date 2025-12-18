@@ -3,17 +3,21 @@ package pe.edu.idat.dsi.dami.idatgram.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import pe.edu.idat.dsi.dami.idatgram.data.entity.PostWithUser
+import pe.edu.idat.dsi.dami.idatgram.data.entity.StoryWithUser
 import pe.edu.idat.dsi.dami.idatgram.data.repository.PostRepository
+import pe.edu.idat.dsi.dami.idatgram.data.repository.StoryRepository
 import pe.edu.idat.dsi.dami.idatgram.data.repository.UserRepository
 import javax.inject.Inject
 
 data class HomeUiState(
     val posts: List<PostWithUser> = emptyList(),
+    val stories: List<StoryWithUser> = emptyList(),
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
     val isRefreshing: Boolean = false
@@ -22,7 +26,8 @@ data class HomeUiState(
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val postRepository: PostRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val storyRepository: StoryRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
@@ -39,10 +44,23 @@ class HomeViewModel @Inject constructor(
             userRepository.loadSession()
             userRepository.currentUserIdFlow.collect { userId ->
                 if (userId != null) {
+                    observeStories()
                     refreshFromRemoteThenLoad()
                 } else {
                     _uiState.value = _uiState.value.copy(posts = emptyList(), isLoading = false)
                 }
+            }
+        }
+    }
+
+    private var storiesJob: Job? = null
+
+    private fun observeStories() {
+        // Evita duplicar collectors si el flow de sesión emite varias veces
+        storiesJob?.cancel()
+        storiesJob = viewModelScope.launch {
+            storyRepository.getFeedStories().collect { stories ->
+                _uiState.value = _uiState.value.copy(stories = stories)
             }
         }
     }
@@ -52,15 +70,23 @@ class HomeViewModel @Inject constructor(
             _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
 
             try {
-                val remoteResult = postRepository.refreshFeed()
-                if (remoteResult.isFailure) {
+                val postsRemoteResult = postRepository.refreshFeed()
+                if (postsRemoteResult.isFailure) {
                     // Si falla remoto, no se bloequa: muestra mensaje y sigue con local
                     _uiState.value = _uiState.value.copy(
-                        errorMessage = "No se pudo sincronizar con el servidor: ${remoteResult.exceptionOrNull()?.message}"
+                        errorMessage = "No se pudo sincronizar con el servidor: ${postsRemoteResult.exceptionOrNull()?.message}"
                     )
                 }
 
-                // Siempre cargamos Room
+                // Sync stories
+                val storiesRemoteResult = storyRepository.refreshStories()
+                if (storiesRemoteResult.isFailure) {
+                    _uiState.value = _uiState.value.copy(
+                        errorMessage = "No se pudo sincronizar stories: ${storiesRemoteResult.exceptionOrNull()?.message}"
+                    )
+                }
+
+                // Cargamos Room
                 val posts = postRepository.getFeedPosts()
                 _uiState.value = _uiState.value.copy(
                     posts = posts,

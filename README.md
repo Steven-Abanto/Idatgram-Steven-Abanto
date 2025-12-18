@@ -86,13 +86,16 @@ app/
 │   │   │   ├── dto/
 │   │   │   │   ├── CommentDto.kt 
 │   │   │   │   ├── UserDto.kt
-│   │   │   │   └── PostDto.kt
+│   │   │   │   ├── PostDto.kt
+│   │   │   │   └── StoryDto.kt
 │   │   │   └── IdatgramApiService.kt
 │   │   └── repository/                # Repositorios
 │   │       ├── CommentRepository.kt
 │   │       ├── LocalDatabaseRepository.kt
 │   │       ├── UserRepository.kt
-│   │       └── PostRepository.kt
+│   │       ├── PostRepository.kt
+│   │       └── StoryRepository.kt
+│   ├── di/                            # Inyección de dependencias
 │   │   └── session/                  # Manejo de sesión
 │   │       └── SessionManager.kt
 │   ├── di/                           # Inyección de dependencias
@@ -117,8 +120,12 @@ app/
 │   │   │   │   └── CommentScreen.kt
 │   │   │   ├── home/
 │   │   │   │   └── HomeScreen.kt
-│   │   │   └── profile/
-│   │   │       └── ProfileScreen.kt
+│   │   │   ├── profile/
+│   │   │   │   └── ProfileScreen.kt
+│   │   │   ├── search/
+│   │   │   │   └── SearchScreen.kt
+│   │   │   └── story/
+│   │   │       └── StoryViewerScreen.kt
 │   │   ├── theme/                    # Tema personalizado
 │   │   │   ├── Color.kt
 │   │   │   ├── Theme.kt
@@ -129,7 +136,9 @@ app/
 │   │       ├── HomeViewModel.kt
 │   │       ├── LoginViewModel.kt
 │   │       ├── ProfileViewModel.kt
-│   │       └── SessionViewModel.kt
+│   │       ├── SessionViewModel.kt
+│   │       ├── SearchViewModel.kt
+│   │       └── StoryViewerViewModel.kt
 │   ├── IdatgramApplication.kt        # Application principal
 │   └── MainActivity.kt               # Activity principal
 ├── src/main/res/

@@ -30,6 +30,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val stories = uiState.stories
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -119,14 +120,13 @@ fun HomeScreen(
                                     onClick = { onStoryClick("own") }
                                 )
                             }
-                            
-                            // Stories de otros usuarios (simuladas)
-                            items(5) { index ->
+
+                            items(stories, key = { it.story.id }) { item ->
                                 StoryCircle(
-                                    imageUrl = "https://picsum.photos/100/100?random=${200 + index}",
-                                    username = "user_${index + 1}",
-                                    hasNewStory = true,
-                                    onClick = { onStoryClick("user_${index + 1}") }
+                                    imageUrl = item.user.profileImageUrl,
+                                    username = item.user.username,
+                                    hasNewStory = !item.isViewed,
+                                    onClick = { onStoryClick(item.user.id) }
                                 )
                             }
                         }
@@ -141,7 +141,7 @@ fun HomeScreen(
                             },
 //                            onCommentClick = { /* TODO: Implementar comentarios */ },
                             onCommentClick = {
-                                onCommentsClick(postWithUser.post.id)  // ✅ AQUÍ
+                                onCommentsClick(postWithUser.post.id)
                             },
                             onShareClick = { /* TODO: Implementar compartir */ },
                             onSaveClick = {

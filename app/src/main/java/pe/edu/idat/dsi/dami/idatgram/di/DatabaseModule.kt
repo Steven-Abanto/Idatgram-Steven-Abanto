@@ -49,7 +49,6 @@ object DatabaseModule {
         return database.storyDao()
     }
 
-
     //SessionManager para manejar DataStore
     @Provides
     @Singleton

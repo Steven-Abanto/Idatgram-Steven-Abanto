@@ -2,6 +2,7 @@ package pe.edu.idat.dsi.dami.idatgram.data.remote
 
 import pe.edu.idat.dsi.dami.idatgram.data.remote.dto.CommentDto
 import pe.edu.idat.dsi.dami.idatgram.data.remote.dto.PostDto
+import pe.edu.idat.dsi.dami.idatgram.data.remote.dto.StoryDto
 import pe.edu.idat.dsi.dami.idatgram.data.remote.dto.UserDto
 import pe.edu.idat.dsi.dami.idatgram.data.remote.dto.UserFollowDto
 import retrofit2.http.GET
@@ -27,4 +28,6 @@ interface IdatgramApiService {
     @GET("comments")
     suspend fun getComments(): List<CommentDto>
 
+    @GET("stories")
+    suspend fun getStories(): List<StoryDto>
 }

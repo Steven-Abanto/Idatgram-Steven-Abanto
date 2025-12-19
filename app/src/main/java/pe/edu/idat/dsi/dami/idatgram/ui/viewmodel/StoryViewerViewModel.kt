@@ -61,7 +61,9 @@ class StoryViewerViewModel @Inject constructor(
         _uiState.update { it.copy(currentIndex = prevIndex) }
     }
 
-    private fun markViewed(storyId: String) {
-        viewModelScope.launch { storyRepository.markViewed(storyId) }
+    fun markViewed(storyId: String) {
+        viewModelScope.launch {
+            storyRepository.markViewed(storyId)
+        }
     }
 }

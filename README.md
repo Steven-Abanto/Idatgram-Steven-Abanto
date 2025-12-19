@@ -57,7 +57,7 @@ Este proyecto está diseñado para enseñar los conceptos fundamentales de desar
 - [x] Búsqueda y exploración
 
 ### 🚧 En Desarrollo
-- [ ] Stories con temporizador
+- [x] Stories con temporizador
 
 ### 🔮 Futuras Implementaciones
 - [ ] Notificaciones push

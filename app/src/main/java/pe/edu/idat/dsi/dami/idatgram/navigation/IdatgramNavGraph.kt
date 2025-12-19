@@ -26,10 +26,11 @@ import pe.edu.idat.dsi.dami.idatgram.ui.screens.story.StoryViewerScreen
 import pe.edu.idat.dsi.dami.idatgram.ui.viewmodel.LoginViewModel
 import pe.edu.idat.dsi.dami.idatgram.ui.viewmodel.ProfileViewModel
 import pe.edu.idat.dsi.dami.idatgram.ui.viewmodel.SessionViewModel
+import pe.edu.idat.dsi.dami.idatgram.ui.viewmodel.StoryViewerViewModel
 
 /**
  * Navigation Graph principal de Idatgram
- * 
+ *
  * Define todas las rutas y transiciones entre pantallas
  * Integra autenticación, pantallas principales y navegación detallada
  */
@@ -43,7 +44,7 @@ fun IdatgramNavGraph(
         navController = navController,
         startDestination = startDestination
     ) {
-        
+
         // Pantallas de Autenticación
 
         composable(route = IdatgramRoutes.LOGIN) {
@@ -83,7 +84,7 @@ fun IdatgramNavGraph(
                 }
             }
         }
-        
+
         composable(route = IdatgramRoutes.REGISTER) {
             // TODO: Implementar RegisterScreen
             PlaceholderScreen(
@@ -91,9 +92,9 @@ fun IdatgramNavGraph(
                 onNavigate = { navController.navigate(IdatgramRoutes.LOGIN) }
             )
         }
-        
+
         // Pantallas Principales
-        
+
         composable(route = IdatgramRoutes.HOME) {
             HomeScreen(
                 onUserProfileClick = { userId ->
@@ -115,7 +116,7 @@ fun IdatgramNavGraph(
                 }
             )
         }
-        
+
         composable(route = IdatgramRoutes.SEARCH) {
             // TODO: Implementar SearchScreen
 //            PlaceholderScreen(
@@ -132,7 +133,7 @@ fun IdatgramNavGraph(
                 }
             )
         }
-        
+
         composable(route = IdatgramRoutes.ADD_POST) {
             AddPostScreen(
                 onNavigateBack = {
@@ -145,7 +146,7 @@ fun IdatgramNavGraph(
                 }
             )
         }
-        
+
         composable(route = IdatgramRoutes.ACTIVITY) {
             // TODO: Implementar ActivityScreen
             PlaceholderScreen(
@@ -202,9 +203,9 @@ fun IdatgramNavGraph(
                 onAddPostClick = { navController.navigate(IdatgramRoutes.ADD_POST) }
             )
         }
-        
+
         // Pantallas de Detalle
-        
+
         composable(
             route = IdatgramRoutes.USER_PROFILE,
             arguments = listOf(
@@ -242,12 +243,12 @@ fun IdatgramNavGraph(
                 onOptionsClick = { navController.navigate(IdatgramRoutes.SETTINGS) }
             )
         }
-        
+
         composable(
             route = IdatgramRoutes.POST_DETAIL,
             arguments = listOf(
-                navArgument(IdatgramArgs.POST_ID) { 
-                    type = NavType.StringType 
+                navArgument(IdatgramArgs.POST_ID) {
+                    type = NavType.StringType
                 }
             )
         ) { backStackEntry ->
@@ -259,12 +260,12 @@ fun IdatgramNavGraph(
                 onNavigate = { navController.popBackStack() }
             )
         }
-        
+
         composable(
             route = IdatgramRoutes.COMMENTS,
             arguments = listOf(
-                navArgument(IdatgramArgs.POST_ID) { 
-                    type = NavType.StringType 
+                navArgument(IdatgramArgs.POST_ID) {
+                    type = NavType.StringType
                 }
             )
         ) { backStackEntry ->
@@ -279,34 +280,59 @@ fun IdatgramNavGraph(
                 onBack = { navController.popBackStack() }
             )
         }
-        
+
         composable(
             route = IdatgramRoutes.STORY_VIEWER,
             arguments = listOf(
-                navArgument(IdatgramArgs.USER_ID) { 
-                    type = NavType.StringType 
-                }
+                navArgument(IdatgramArgs.USER_ID) { type = NavType.StringType }
             )
         ) { backStackEntry ->
-            val userId = backStackEntry.arguments?.getString(IdatgramArgs.USER_ID) ?: ""
             // TODO: Implementar StoryViewerScreen
 //            PlaceholderScreen(
 //                title = "Historia",
 //                subtitle = "Usuario: $userId",
 //                onNavigate = { navController.popBackStack() }
 //            )
+            val userId = backStackEntry.arguments?.getString(IdatgramArgs.USER_ID)
+                ?: return@composable
 
-             StoryViewerScreen(
-                userId = userId,
-                onClose = { navController.popBackStack() }
-            )
+            val vm: StoryViewerViewModel = hiltViewModel()
+            val state by vm.uiState.collectAsState()
+
+            LaunchedEffect(userId) {
+                vm.load(userId)
+            }
+
+            when {
+                state.isLoading -> {
+                    PlaceholderScreen(title = "Cargando historia...", subtitle = null)
+                }
+
+                state.stories.isEmpty() -> {
+                    PlaceholderScreen(
+                        title = "No hay stories",
+                        subtitle = "Este usuario no tiene historias activas",
+                        onNavigate = { navController.popBackStack() }
+                    )
+                }
+
+                else -> {
+                    StoryViewerScreen(
+                        stories = state.stories,
+                        durationMs = 5000,
+                        onClose = { navController.popBackStack() },
+                        onStoryViewed = { storyId -> vm.markViewed(storyId) }
+                    )
+                }
+            }
         }
-        
+
+
         composable(
             route = IdatgramRoutes.FOLLOWERS,
             arguments = listOf(
-                navArgument(IdatgramArgs.USER_ID) { 
-                    type = NavType.StringType 
+                navArgument(IdatgramArgs.USER_ID) {
+                    type = NavType.StringType
                 }
             )
         ) { backStackEntry ->
@@ -318,12 +344,12 @@ fun IdatgramNavGraph(
                 onNavigate = { navController.popBackStack() }
             )
         }
-        
+
         composable(
             route = IdatgramRoutes.FOLLOWING,
             arguments = listOf(
-                navArgument(IdatgramArgs.USER_ID) { 
-                    type = NavType.StringType 
+                navArgument(IdatgramArgs.USER_ID) {
+                    type = NavType.StringType
                 }
             )
         ) { backStackEntry ->
@@ -335,7 +361,7 @@ fun IdatgramNavGraph(
                 onNavigate = { navController.popBackStack() }
             )
         }
-        
+
         composable(route = IdatgramRoutes.EDIT_PROFILE) {
             // TODO: Implementar EditProfileScreen
             PlaceholderScreen(
@@ -344,7 +370,7 @@ fun IdatgramNavGraph(
                 onNavigate = { navController.popBackStack() }
             )
         }
-        
+
         composable(route = IdatgramRoutes.SETTINGS) {
             // TODO: Implementar SettingsScreen
             PlaceholderScreen(
@@ -378,7 +404,7 @@ private fun PlaceholderScreen(
             style = androidx.compose.material3.MaterialTheme.typography.headlineMedium,
             color = androidx.compose.material3.MaterialTheme.colorScheme.onBackground
         )
-        
+
         subtitle?.let {
             androidx.compose.foundation.layout.Spacer(
                 modifier = Modifier.height(8.dp)
@@ -389,7 +415,7 @@ private fun PlaceholderScreen(
                 color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
-        
+
         onNavigate?.let { navigate ->
             androidx.compose.foundation.layout.Spacer(
                 modifier = Modifier.height(24.dp)
